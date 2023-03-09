@@ -28,8 +28,8 @@
       </div>
     </div>
     <div class="d-flex">
-      <button @click="logout">Log out</button>
-      <button @click="login">Log In</button>
+      <button @click="logout" class="btn btn-sm btn-outline-light">Log out</button>
+      <button @click="login" class="btn btn-outline-light btn-sm">Log In</button>
       <GoogleSignInButton
         @success="handleLoginSuccess"
         @error="handleLoginError"
