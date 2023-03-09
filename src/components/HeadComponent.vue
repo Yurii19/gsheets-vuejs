@@ -12,87 +12,51 @@
         >
       </li>
     </ul>
-    <div class="dropdown">
-      <button
-        class="btn btn-secondary dropdown-toggle"
-        type="button"
-        id="dropdownMenu2"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        Show credential
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <span><b>Email: </b>{{ userCredentials.email }}</span>
-      </div>
-    </div>
+
     <div class="d-flex">
-      <button @click="logout">Log out</button>
-      <button @click="login">Log In</button>
-      <GoogleSignInButton
-        @success="handleLoginSuccess"
-        @error="handleLoginError"
-      ></GoogleSignInButton>
+      <button type="button" class="btn btn-sm btn-info" @click="gLogOut">
+        Log out
+      </button>
+
+      <GoogleLogin :callback="loginCallback" />
     </div>
   </div>
 </template>
 
-<script>
-import { CLIENT_ID, SCOPES } from '@/variables/constants';
-//import { REDIRECT_URI } from '@/variables/constants';
-import { GoogleSignInButton, decodeCredential } from 'vue3-google-signin';
-import { useCodeClient } from 'vue3-google-signin';
-// import { useGsiScript ,useGoogleAuth } from 'vue3-google-signin';
+<script setup>
 //import { CLIENT_ID } from '@/variables/constants';
+import { CLIENT_ID } from '@/variables/constants';
+import { googleLogout } from 'vue3-google-login';
+//import { decodeCredential } from 'vue3-google-login';
+import { googleSdkLoaded } from "vue3-google-login"
 
-// const cbTest = async (response) => {
-//   console.log('test: ', response);
-//   setTimeout(()=>{ window.localStorage.setItem('gapi', response); console.log('test: ', response);},2000)
+let gCredential = {};
+let decodedCredentials = {};
 
-//   return response;
-// };
+const loginCallback = () => {
+  googleSdkLoaded((google) => {
+    console.log('gogle: ',google)
+    google.accounts.oauth2.initCodeClient({
+      client_id: CLIENT_ID,
+      scope: 'email profile openid',
+      callback: (response) => {
+        console.log("Handle the response", response)
+      }
+    }).requestCode()
+  })
+}
 
-export default {
-  setup() {
-    const { isReady, login, logout, setAccessToken, error, getClient, client } =
-      useCodeClient({
-        clientId: CLIENT_ID,
-        // redirectUri: REDIRECT_URI,
-        scope: SCOPES,
-        prompt: 'consent',
-      });
-
-    return { client, isReady, login, logout, setAccessToken, error, getClient };
-  },
-  components: { GoogleSignInButton },
-  data() {
-    return {
-      userCredentials: { email: 'unlogined' },
-    };
-  },
-  methods: {
-    logOut() {
-      console.log(window.localStorage);
-      console.log('client -> ', this.client);
-    },
-
-    handleLoginError: () => {
-      console.error('Login failed');
-    },
-
-    handleLoginSuccess(response) {
-      const { credential } = response;
-      this.userCredentials = decodeCredential(credential);
-      console.log('Access Token', credential);
-    },
-  },
+const gLogOut = function () {
+  //const res = getCredentials()
+  console.log('gCredential', gCredential);
+  console.log('decodedCredentials', decodedCredentials);
+  googleLogout();
 };
+// const loginCallback = (response) => {
+//   gCredential = response;
+//   decodedCredentials = decodeCredential(response.credential);
+//   console.log('Handle the response', response);
+// };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.nav-link:hover {
-  /* border-bottom: 1px dotted white; */
-}
-</style>
+<style scoped></style>
