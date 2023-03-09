@@ -25,37 +25,55 @@
 
 <script setup>
 //import { CLIENT_ID } from '@/variables/constants';
-import { CLIENT_ID } from '@/variables/constants';
+import { CLIENT_ID, SCOPES } from '@/variables/constants';
+import { onMounted } from 'vue';
 import { googleLogout } from 'vue3-google-login';
-//import { decodeCredential } from 'vue3-google-login';
-import { googleSdkLoaded } from "vue3-google-login"
+import { decodeCredential } from 'vue3-google-login';
+import { googleSdkLoaded } from 'vue3-google-login';
 
 let gCredential = {};
-let decodedCredentials = {};
+let uCredentials = {};
+//let googleClient = {};
 
-const loginCallback = () => {
+onMounted(function () {
+  console.log('onMounted');
+});
+
+const loginCallback = (resp) => {
+  setCredential(resp);
   googleSdkLoaded((google) => {
-    console.log('gogle: ',google)
-    google.accounts.oauth2.initCodeClient({
-      client_id: CLIENT_ID,
-      scope: 'email profile openid',
-      callback: (response) => {
-        console.log("Handle the response", response)
-      }
-    }).requestCode()
-  })
-}
+    console.log('gogle: ', google);
+   const gapi = google.accounts.oauth2
+      .initCodeClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: (response) => {
+          //googleClient = response;
+          console.log('Handle the response', response);
+        },
+      })
+      .requestCode();
+      console.log('gapi: ',gapi)
+  });
+};
 
-const gLogOut = function () {
+const gLogOut = () => {
   //const res = getCredentials()
+  console.log('this: ' );
   console.log('gCredential', gCredential);
-  console.log('decodedCredentials', decodedCredentials);
+  console.log('decodedCredentials', uCredentials);
   googleLogout();
 };
-// const loginCallback = (response) => {
+
+const setCredential = function (response) {
+  gCredential = response;
+  uCredentials = decodeCredential(response.credential);
+};
+// const loginCallback1 = (response) => {
 //   gCredential = response;
-//   decodedCredentials = decodeCredential(response.credential);
-//   console.log('Handle the response', response);
+//   //decodedCredentials = decodeCredential(response.credential);
+//   loginCallback()
+//   console.log('loginCallback1: ', response);
 // };
 </script>
 
