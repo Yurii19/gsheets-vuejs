@@ -35,7 +35,7 @@ import { googleSdkLoaded } from 'vue3-google-login';
 
 
 onMounted(function () {
-  window.gapi.load('client');
+  window.gapi.load('client').then();
 });
 
 

@@ -5,6 +5,8 @@ import HomePage from './views/HomePage.vue';
 import FormPage from './views/FormPage.vue';
 import vue3GoogleLogin from 'vue3-google-login';
 import { CLIENT_ID } from './variables/constants';
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -20,5 +22,7 @@ app.use(vue3GoogleLogin, {
 });
 
 app.use(router);
+
+app.use(VueAxios, axios)
 
 app.mount('#app');
