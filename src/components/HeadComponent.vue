@@ -27,109 +27,40 @@
 import {
   API_KEY,
   CLIENT_ID,
-  DISCOVERY_DOC,
   SCOPES,
   SHEET,
 } from '@/variables/constants';
 import { onMounted } from 'vue';
-//import { googleLogout } from 'vue3-google-login';
-//import { decodeCredential } from 'vue3-google-login';
 import { googleSdkLoaded } from 'vue3-google-login';
 
-// let gCredential = {};
-// let uCredentials = {};
-let googleClient = {};
 
 onMounted(function () {
-  window.gapi.load('client', {
-    initializeGapiClient,
-  });
-  // setTimeout(() => {
-  //    console.log('setTimeout->window.gapi: ', window.gapi);
-  //  // initializeGapiClient()
-  // }, 2000);
-
-  console.log('onMounted:  window.gapi.client: ', window.gapi);
+  window.gapi.load('client');
 });
 
-const initializeGapiClient = async function () {
-  console.log('initializeGapiClient called.', window.gapi.client);
-  await window.gapi.client
-    .init({
-      apiKey: API_KEY,
-      clientId: CLIENT_ID,
-      discoveryDocs: [DISCOVERY_DOC],
-      scope: SCOPES,
-    })
-    .then((d) => console.log('initializeGapiClient: ', d));
-  // gapiInited = true;
-  // maybeEnableButtons();
-};
 
-const onLogin = (gUser) => {
-  const authResponse = gUser;
-  console.log('onSuccess authResponse: -> ', authResponse);
+const onLogin = () => {
   googleSdkLoaded((gSdk) => {
-    console.log('googleSdkLoaded: ', gSdk);
     gSdk.accounts.oauth2
       .initCodeClient({
         client_id: CLIENT_ID,
         scope: SCOPES,
-        callback: (response) => {
-          googleClient = response;
-          console.log('Handle the response', googleClient);
+        callback: () => {
         },
       })
       .requestCode();
-  });
+   });
 };
 
 const gLogOut = () => {
-  //console.log('googleClient => ', googleClient )
-   window.gapi.client.request({
-    path: SHEET,
-    method: 'GET',
-    params: { key: API_KEY}
-  }).then((r)=> console.log('gLogOut >>> ',r));
-  // console.log('gLogOut:  window.gapi: ', window.gapi);
-  // console.log('gLogOut:  window.gapi.client: ', window.gapi.client);
-  //console.log('gLogOut:  window.gapi.client.sheets: ', gClient);
-
-  // googleLogout();
+  window.gapi.client
+    .request({
+      path: SHEET,
+      method: 'GET',
+      params: { key: API_KEY },
+    })
+    .then((r) => console.log('gLogOut >>> ', r));
 };
-
-// const loginCallback = (gUser) => {
-//   //setCredential(resp);
-//   const authResponse = gUser;
-//   console.log('authResponse: ', authResponse)
-
-//   googleSdkLoaded((google) => {
-//     //console.log('gogle: ', google);
-//     google.accounts.oauth2
-//       .initCodeClient({
-//         client_id: CLIENT_ID,
-//         scope: SCOPES,
-//         callback: (response) => {
-//           //googleClient = response;
-//           googleClient = response;
-//           console.log(googleClient)
-//           console.log('Handle the response', response);
-//         },
-//       })
-//       .requestCode();
-//   });
-// };
-
-// const setCredential = function (response) {
-//   gCredential = response;
-//   uCredentials = decodeCredential(response.credential);
-// };
-// const loginCallback1 = (response) => {
-//   gCredential = response;
-//   //decodedCredentials = decodeCredential(response.credential);
-//   loginCallback()
-//   console.log('loginCallback1: ', response);
-// };
 </script>
 
 <style scoped></style>

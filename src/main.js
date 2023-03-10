@@ -20,6 +20,5 @@ app.use(vue3GoogleLogin, {
 });
 
 app.use(router);
-//app.use(VueCookies);
 
 app.mount('#app');
