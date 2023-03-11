@@ -8,7 +8,6 @@
           :value="nameInput"
           @input="updateNameInput($event)"
           class="form-control"
-          id="exampleInputEmail1"
           aria-describedby="emailHelp"
         />
         <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
@@ -19,8 +18,16 @@
           type="text"
           :value="deviceInput"
           class="form-control"
-          id="exampleInputPassword1"
           @input="updateDeviceInput($event)"
+        />
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Reference</label>
+        <input
+          type="text"
+          :value="refInput"
+          class="form-control"
+          @input="updateRefInput($event)"
         />
       </div>
       <button type="submit" class="btn btn-primary mr-2">Submit</button>
@@ -36,18 +43,13 @@
 </template>
 
 <script>
-// import { Options, Vue } from 'vue-class-component';
-// @Options({
-//   props: {
-//     name: String,
-//   },
-// })
 export default {
   data() {
     return {
       viewTitle: 'Form page',
       nameInput: '',
       deviceInput: '',
+      refInput: '',
     };
   },
 
@@ -61,6 +63,7 @@ export default {
     clearInputs() {
       this.nameInput = '';
       this.deviceInput = '';
+      this.refInput = '';
     },
 
     updateNameInput(e) {
@@ -71,6 +74,11 @@ export default {
     updateDeviceInput(e) {
       const input = e.target;
       this.deviceInput = input.value;
+    },
+
+    updateRefInput(e) {
+      const input = e.target;
+      this.refInput = input.value;
     },
   },
 };
