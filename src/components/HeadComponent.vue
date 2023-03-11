@@ -29,13 +29,16 @@ import {
   CLIENT_ID,
   SCOPES,
   SHEET,
+  SHEET_DB_RAND,
 } from '@/variables/constants';
 import { onMounted } from 'vue';
 import { googleSdkLoaded } from 'vue3-google-login';
+import {getList} from '@/services/sheetsRest';
 
 
 onMounted(function () {
-  window.gapi.load('client').then();
+  console.log('axios -> ', window)
+  window.gapi.load('client');
 });
 
 
@@ -53,6 +56,7 @@ const onLogin = () => {
 };
 
 const gLogOut = () => {
+  getList(SHEET_DB_RAND).then((r) => console.log('getList >>> ', r));
   window.gapi.client
     .request({
       path: SHEET,

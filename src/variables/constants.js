@@ -10,7 +10,7 @@ export const SCOPES =
   'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/drive';
 export const REDIRECT_URI = 'http://localhost:8080';
 
-export const SHEET_2 =
-  'https://docs.google.com/spreadsheets/d/1b9HuDKyFU6mxDqzjmY9l0Q249br5J1DjK0b3Z9TokGw/edit#gid=1426943389';
+export const SHEET_DB_RAND =
+  'https://sheets.googleapis.com/v4/spreadsheets/1b9HuDKyFU6mxDqzjmY9l0Q249br5J1DjK0b3Z9TokGw/values/db_rand';
 export const SHEET =
   'https://sheets.googleapis.com/v4/spreadsheets/1b9HuDKyFU6mxDqzjmY9l0Q249br5J1DjK0b3Z9TokGw';
