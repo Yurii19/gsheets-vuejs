@@ -1,30 +1,18 @@
 <template>
-  <LoginPage v-if="!isLogined" />
-  <HeadComponent v-if="isLogined" />
-  <router-view v-if="isLogined"></router-view>
-  <!-- <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+  <HeadComponent />
+  <router-view></router-view>
 </template>
 
 <script>
 import HeadComponent from './components/HeadComponent.vue';
-import LoginPage from './views/LoginPage.vue';
 
 export default {
   name: 'App',
   components: {
     HeadComponent,
-    LoginPage,
   },
-  computed: {
-    isLogined() {
-      const lStorage = window.localStorage.theUser;
-      if (lStorage) {
-        return true;
-      } else {
-        return false;
-      }
-    },
+  onMounted() {
+    console.log(window);
   },
 };
 </script>

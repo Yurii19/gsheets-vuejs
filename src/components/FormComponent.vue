@@ -34,15 +34,15 @@
         <input
           type="text"
           :value="refInput"
-          class="form-control w-75"
+          class="form-control  w-75"
           id="ref_iid"
           @input="updateRefInput($event)"
         />
       </div>
-      <button type="submit" class="btn btn-primary mr-2">Submit</button>
+      <button type="submit" class="btn btn-sm btn-primary mr-2">Submit</button>
       <button
         type="button"
-        class="btn btn-warning"
+        class="btn btn-sm btn-danger"
         @click.prevent="clearInputs()"
       >
         Clear

@@ -12,59 +12,66 @@
         >
       </li>
     </ul>
-
     <div class="d-flex">
-      <button type="button" class="btn btn-sm btn-info" @click="gLogOut">
+      <button type="button" class="btn btn-sm btn-info">
+        <router-link to="/login" class="text-white"> Log in</router-link>
+      </button>
+    </div>
+    <div class="d-flex">
+      <button type="button" class="btn btn-sm btn-info mr-2" @click="gLogOut">
         Log out
       </button>
 
-      <GoogleLogin :callback="onLogin" />
+      <!-- <GoogleLogin :callback="onLogin" /> -->
     </div>
   </div>
 </template>
 
 <script setup>
 import {
-  API_KEY,
-  CLIENT_ID,
-  SCOPES,
-  SHEET,
-  SHEET_DB_RAND,
+  // API_KEY,
+  // CLIENT_ID,
+  // SCOPES,
+  // SHEET,
+  //SHEET_DB_RAND,
 } from '@/variables/constants';
 import { onMounted } from 'vue';
-import { googleSdkLoaded } from 'vue3-google-login';
-import {getList} from '@/services/sheetsRest';
-
+//import { googleSdkLoaded } from 'vue3-google-login';
+//import { getList } from '@/services/sheetsRest';
+import { useRouter } from 'vue-router';
 
 onMounted(function () {
-  console.log('axios -> ', window)
   window.gapi.load('client');
 });
 
-
-const onLogin = () => {
-  googleSdkLoaded((gSdk) => {
-    gSdk.accounts.oauth2
-      .initCodeClient({
-        client_id: CLIENT_ID,
-        scope: SCOPES,
-        callback: () => {
-        },
-      })
-      .requestCode();
-   });
-};
+const router = useRouter();
 
 const gLogOut = () => {
-  getList(SHEET_DB_RAND).then((r) => console.log('getList >>> ', r));
-  window.gapi.client
-    .request({
-      path: SHEET,
-      method: 'GET',
-      params: { key: API_KEY },
-    })
-    .then((r) => console.log('gLogOut >>> ', r));
+  router.push('/login');
+  window.localStorage.removeItem('theUser');
+ // getList(SHEET_DB_RAND).then((r) => console.log('getList >>> ', r));
 };
+
+// window.gapi.client
+//   .request({
+//     path: SHEET,
+//     method: 'GET',
+//     params: { key: API_KEY },
+//   })
+//   .then((r) => console.log('gLogOut >>> ', r));
+
+// const onLogin = () => {
+//   googleSdkLoaded((gSdk) => {
+//     gSdk.accounts.oauth2
+//       .initCodeClient({
+//         client_id: CLIENT_ID,
+//         scope: SCOPES,
+//         callback: () => {
+//         },
+//       })
+//       .requestCode();
+//    });
+// };
 </script>
 
 <style scoped></style>
