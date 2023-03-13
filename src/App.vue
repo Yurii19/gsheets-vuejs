@@ -1,20 +1,20 @@
 <template>
   <HeadComponent />
   <router-view></router-view>
-  <!-- <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-
 </template>
 
 <script>
-import HeadComponent from './components/HeadComponent.vue'
+import HeadComponent from './components/HeadComponent.vue';
 
 export default {
   name: 'App',
   components: {
-    HeadComponent
-  }
-}
+    HeadComponent,
+  },
+  onMounted() {
+    console.log(window);
+  },
+};
 </script>
 
 <style>
@@ -25,10 +25,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   /* margin-top: 60px; */
-
 }
 iframe {
   margin: 0 !important;
 }
-
 </style>

@@ -12,87 +12,67 @@
         >
       </li>
     </ul>
-    <div class="dropdown">
-      <button
-        class="btn btn-secondary dropdown-toggle"
-        type="button"
-        id="dropdownMenu2"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        Show credential
+    <div class="d-flex">
+      <button type="button" class="btn btn-sm btn-info">
+        <router-link to="/login" class="text-white"> Log in</router-link>
       </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <span><b>Email: </b>{{ userCredentials.email }}</span>
-      </div>
     </div>
     <div class="d-flex">
-      <button @click="logout" class="btn btn-sm btn-outline-light">Log out</button>
-      <button @click="login" class="btn btn-outline-light btn-sm">Log In</button>
-      <GoogleSignInButton
-        @success="handleLoginSuccess"
-        @error="handleLoginError"
-      ></GoogleSignInButton>
+      <button type="button" class="btn btn-sm btn-info mr-2" @click="gLogOut">
+        Log out
+      </button>
+
+      <!-- <GoogleLogin :callback="onLogin" /> -->
     </div>
   </div>
 </template>
 
-<script>
-import { CLIENT_ID, SCOPES } from '@/variables/constants';
-//import { REDIRECT_URI } from '@/variables/constants';
-import { GoogleSignInButton, decodeCredential } from 'vue3-google-signin';
-import { useCodeClient } from 'vue3-google-signin';
-// import { useGsiScript ,useGoogleAuth } from 'vue3-google-signin';
-//import { CLIENT_ID } from '@/variables/constants';
+<script setup>
+import {
+  // API_KEY,
+  // CLIENT_ID,
+  // SCOPES,
+  // SHEET,
+  //SHEET_DB_RAND,
+} from '@/variables/constants';
+import { onMounted } from 'vue';
+//import { googleSdkLoaded } from 'vue3-google-login';
+//import { getList } from '@/services/sheetsRest';
+//import { useRouter } from 'vue-router';
 
-// const cbTest = async (response) => {
-//   console.log('test: ', response);
-//   setTimeout(()=>{ window.localStorage.setItem('gapi', response); console.log('test: ', response);},2000)
+onMounted(function () {
+  window.gapi.load('client');
+});
 
-//   return response;
-// };
+//const router = useRouter();
 
-export default {
-  setup() {
-    const { isReady, login, logout, setAccessToken, error, getClient, client } =
-      useCodeClient({
-        clientId: CLIENT_ID,
-        // redirectUri: REDIRECT_URI,
-        scope: SCOPES,
-        prompt: 'consent',
-      });
-
-    return { client, isReady, login, logout, setAccessToken, error, getClient };
-  },
-  components: { GoogleSignInButton },
-  data() {
-    return {
-      userCredentials: { email: 'unlogined' },
-    };
-  },
-  methods: {
-    logOut() {
-      console.log(window.localStorage);
-      console.log('client -> ', this.client);
-    },
-
-    handleLoginError: () => {
-      console.error('Login failed');
-    },
-
-    handleLoginSuccess(response) {
-      const { credential } = response;
-      this.userCredentials = decodeCredential(credential);
-      console.log('Access Token', credential);
-    },
-  },
+const gLogOut = () => {
+  location.reload();
+  //router.push('/login');
+  window.localStorage.removeItem('theUser');
+ // getList(SHEET_DB_RAND).then((r) => console.log('getList >>> ', r));
 };
+
+// window.gapi.client
+//   .request({
+//     path: SHEET,
+//     method: 'GET',
+//     params: { key: API_KEY },
+//   })
+//   .then((r) => console.log('gLogOut >>> ', r));
+
+// const onLogin = () => {
+//   googleSdkLoaded((gSdk) => {
+//     gSdk.accounts.oauth2
+//       .initCodeClient({
+//         client_id: CLIENT_ID,
+//         scope: SCOPES,
+//         callback: () => {
+//         },
+//       })
+//       .requestCode();
+//    });
+// };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.nav-link:hover {
-  /* border-bottom: 1px dotted white; */
-}
-</style>
+<style scoped></style>
