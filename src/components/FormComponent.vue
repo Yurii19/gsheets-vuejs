@@ -34,12 +34,17 @@
         <input
           type="text"
           :value="refInput"
-          class="form-control  w-75"
+          class="form-control w-75"
           id="ref_iid"
           @input="updateRefInput($event)"
         />
       </div>
-      <button type="submit" class="btn btn-sm btn-primary mr-2">Submit</button>
+      <button
+        type="submit"
+        class="btn btn-sm btn-primary mr-2"
+      >
+        Submit
+      </button>
       <button
         type="button"
         class="btn btn-sm btn-danger"
@@ -52,6 +57,8 @@
 </template>
 
 <script>
+import { updateList } from '@/services/sheetsRest';
+import { SHEET_DB_RAND } from '@/variables/constants';
 export default {
   data() {
     return {
@@ -68,9 +75,9 @@ export default {
 
   methods: {
     submitForm() {
-      //e.preventDefault();
-      console.log(this.nameInput);
-      console.log(this.deviceInput);
+      updateList(SHEET_DB_RAND + ':append').then((r) => console.log(r));
+      // console.log('this.nameInput');
+      // console.log('this.deviceInput');
     },
 
     clearInputs() {

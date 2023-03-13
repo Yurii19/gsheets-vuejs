@@ -38,16 +38,17 @@ import {
 import { onMounted } from 'vue';
 //import { googleSdkLoaded } from 'vue3-google-login';
 //import { getList } from '@/services/sheetsRest';
-import { useRouter } from 'vue-router';
+//import { useRouter } from 'vue-router';
 
 onMounted(function () {
   window.gapi.load('client');
 });
 
-const router = useRouter();
+//const router = useRouter();
 
 const gLogOut = () => {
-  router.push('/login');
+  location.reload();
+  //router.push('/login');
   window.localStorage.removeItem('theUser');
  // getList(SHEET_DB_RAND).then((r) => console.log('getList >>> ', r));
 };
