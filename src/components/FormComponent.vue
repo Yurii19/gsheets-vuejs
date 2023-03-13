@@ -39,12 +39,7 @@
           @input="updateRefInput($event)"
         />
       </div>
-      <button
-        type="submit"
-        class="btn btn-sm btn-primary mr-2"
-      >
-        Submit
-      </button>
+      <button type="submit" class="btn btn-sm btn-primary mr-2">Submit</button>
       <button
         type="submit"
         class="btn btn-sm btn-primary mr-2"
@@ -81,15 +76,17 @@ export default {
   },
 
   methods: {
-
-    getSheet(){
-      getList(SHEET_DB_RAND).then((r) => console.log('SHEET_DB_RAND: ',r));
+    getSheet() {
+      getList({ path: SHEET_DB_RAND }).then((r) =>
+        console.log('SHEET_DB_RAND: got sheet! ', r)
+      );
     },
     submitForm() {
-
-      updateList(SHEET_DB_RAND ).then((r) => console.log(r));
-       console.log('this.nameInput', window.gapi.auth.getToken());
-      // console.log('this.deviceInput');
+      const newRow = ['1',this.nameInput, this.deviceInput, this.refInput]
+      updateList({
+        path: SHEET_DB_RAND,
+        values: [newRow],
+      }).then((r) => console.log('SHEET_DB_RAND: new row added ! ', r));
     },
 
     clearInputs() {

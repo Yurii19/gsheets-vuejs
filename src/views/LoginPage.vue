@@ -71,34 +71,14 @@ const onLogin = (response) => {
       })
       .requestCode();
   });
-
-  googleTokenLogin().then((token) => {
-    console.log('token ', token);
-    window.localStorage.setItem('gToket', token.access_token);
-    isLogined.value = true;
-  });
+  isLogined.value = true;
+  // googleTokenLogin().then((token) => {
+  //   console.log('token ', token);
+  //   window.localStorage.setItem('gToket', token.access_token);
+  //   isLogined.value = true;
+  // });
 };
 
-// const onLogin = (response) => {
-//   console.log('onLogin', response);
-//   const userData = decodeCredential(response.credential);
-//   console.log('decodeCredential', userData);
-
-//   const email = userData.email;
-//   const name = userData.name;
-//   window.localStorage.setItem('theUser', JSON.stringify({ name, email }));
-
-//   isLogined.value = true;
-//   googleSdkLoaded((gSdk) => {
-//     gSdk.accounts.oauth2
-//       .initCodeClient({
-//         client_id: CLIENT_ID,
-//         scope: SCOPES,
-//         callback: () => {},
-//       })
-//       .requestCode();
-//   });
-// };
 </script>
 
 <style scoped>
