@@ -46,6 +46,13 @@
         Submit
       </button>
       <button
+        type="submit"
+        class="btn btn-sm btn-primary mr-2"
+        @click.prevent="getSheet()"
+      >
+        Get sheet
+      </button>
+      <button
         type="button"
         class="btn btn-sm btn-danger"
         @click.prevent="clearInputs()"
@@ -57,7 +64,7 @@
 </template>
 
 <script>
-import { updateList } from '@/services/sheetsRest';
+import { updateList, getList } from '@/services/sheetsRest';
 import { SHEET_DB_RAND } from '@/variables/constants';
 export default {
   data() {
@@ -74,9 +81,14 @@ export default {
   },
 
   methods: {
+
+    getSheet(){
+      getList(SHEET_DB_RAND).then((r) => console.log('SHEET_DB_RAND: ',r));
+    },
     submitForm() {
-      updateList(SHEET_DB_RAND + ':append').then((r) => console.log(r));
-      // console.log('this.nameInput');
+
+      updateList(SHEET_DB_RAND ).then((r) => console.log(r));
+       console.log('this.nameInput', window.gapi.auth.getToken());
       // console.log('this.deviceInput');
     },
 

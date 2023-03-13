@@ -2,80 +2,110 @@
   <div class="card mx-auto mt-5" style="width: 18rem">
     <div class="card-body">
       <h5 class="card-title">Please log in to continue</h5>
-      <!-- <GoogleLogin @click="login" /> -->
-      <button type="button" class="btn btn-outline-secondary">
-        <GoogleIcon /><span class="ml-2">Log in</span>
-      </button>
-      <button
+      <GoogleLogin :callback="onLogin" />
+      <div>
+        <!-- <button
+          type="button"
+          @click="login"
+          class="btn btn-outline-secondary mb-4"
+        >
+          <GoogleIcon /><span class="ml-2">Log in</span>
+        </button> -->
+      </div>
+      <!-- <button
         type="button"
-        class="btn btn-success"
+        class="btn btn-outline-success"
         v-bind:class="{ classDisabled: !isLogined }"
+        :disabled="!isLogined"
+      > -->
+      <router-link to="/" class="" v-bind:class="{ classDisabled: !isLogined }"
+        >Continue</router-link
       >
-        <router-link to="/" class="text-white">Continue</router-link>
-      </button>
-      <button type="button" @click="login" class="btn btn-primary">
-        Get token
-      </button>
+      <!-- </button> -->
     </div>
   </div>
 </template>
 
 <script setup>
-//import { decodeCredential } from 'vue3-google-login';
+import { decodeCredential } from 'vue3-google-login';
 //import { defineEmits } from 'vue';
-import { ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 //import { GoogleLogin } from 'vue3-google-login'
 import { googleTokenLogin } from 'vue3-google-login';
 import GoogleIcon from '../icons/GoogleIcon.vue';
-// import { googleSdkLoaded } from 'vue3-google-login';
+import { googleSdkLoaded } from 'vue3-google-login';
 //import { googleAuthCodeLogin } from 'vue3-google-login';
-// import {
-//   // API_KEY,
-//    CLIENT_ID,
-//   SCOPES,
-//   // SHEET,
-//   //SHEET_DB_RAND,
-// } from '@/variables/constants';
+import {
+  // API_KEY,
+  CLIENT_ID,
+  SCOPES,
+  // SHEET,
+  //SHEET_DB_RAND,
+} from '@/variables/constants';
 
-//const emit = defineEmits(['onLogined']);
-const login = (response) => {
-  console.log('Login', response);
-  googleTokenLogin().then((r) => {
-    console.log('onSuccess >>> ', r);
-  });
-};
-// const callback = function () {
-//   googleAuthCodeLogin().then((response) => {
-//     console.log('Handle the response', response);
+//  onMounted (()=>{
+//   console.log('isLogined -> ', isLogined)
+// });
+let isLogined = ref(false);
+
+//isLogined = true;
+
+// const login = () => {
+//   googleTokenLogin().then((token) => {
+//     console.log('token: ', token);
 //   });
 // };
 
-let isLogined = ref(window.localStorage.theUser);
+const onLogin = (response) => {
+  const decodedData = decodeCredential(response.credential);
+  const { email, name } = decodedData;
+  window.localStorage.setItem('theUser', JSON.stringify({ name, email }));
+
+  googleSdkLoaded((gSdk) => {
+    console.log('SDK >>> ', gSdk);
+    gSdk.accounts.oauth2
+      .initCodeClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: () => {},
+      })
+      .requestCode();
+  });
+
+  googleTokenLogin().then((token) => {
+    console.log('token ', token);
+    window.localStorage.setItem('gToket', token.access_token);
+    isLogined.value = true;
+  });
+};
 
 // const onLogin = (response) => {
-//   console.log('onLogin', response)
+//   console.log('onLogin', response);
 //   const userData = decodeCredential(response.credential);
-//   console.log('decodeCredential', userData)
+//   console.log('decodeCredential', userData);
 
 //   const email = userData.email;
 //   const name = userData.name;
 //   window.localStorage.setItem('theUser', JSON.stringify({ name, email }));
 
 //   isLogined.value = true;
-//     googleSdkLoaded((gSdk) => {
+//   googleSdkLoaded((gSdk) => {
 //     gSdk.accounts.oauth2
 //       .initCodeClient({
 //         client_id: CLIENT_ID,
 //         scope: SCOPES,
-//         callback: () => {
-//         },
+//         callback: () => {},
 //       })
 //       .requestCode();
-//    });
+//   });
 // };
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+  color: inherit;
+}
 .classDisabled {
   opacity: 0.3;
 }

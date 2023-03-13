@@ -9,7 +9,7 @@ export const DISCOVERY_DOC =
 export const SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
 
 export const SCOPES =
-  'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/drive';
+  'https://www.googleapis.com/auth/spreadsheets';
 
 export const REDIRECT_URI = 'http://localhost:8080';
 
@@ -18,3 +18,5 @@ export const SHEET_DB_RAND =
   
 export const SHEET =
   'https://sheets.googleapis.com/v4/spreadsheets/1b9HuDKyFU6mxDqzjmY9l0Q249br5J1DjK0b3Z9TokGw';
+
+  export const ADD_TO_DB_RAND ='https://sheets.googleapis.com/v4/spreadsheets/1b9HuDKyFU6mxDqzjmY9l0Q249br5J1DjK0b3Z9TokGw/values/db_rand'

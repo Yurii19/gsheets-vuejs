@@ -8,13 +8,17 @@ export const getList = (path) =>
   });
 
 export const updateList = (path) =>
+  //const suffics = '/db_rand!A7:D7:append';
+  //console.log('updateList: >>> ', );
   window.gapi.client.request({
-    path: path,
+    path: "https://sheets.googleapis.com/v4/spreadsheets/1b9HuDKyFU6mxDqzjmY9l0Q249br5J1DjK0b3Z9TokGw/values/db_rand!A7:D7:append",
     method: 'POST',
-    params: {
-      valueInputOption: 'USER_ENTERED',
+    headers: {
+      Authorization: 'Bearer'  + window.gapi.auth.getToken().access_token,
+      'Content-Type': 'application/json',
     },
     body: {
+      range: 'db_rand!A7:D7',
       values: [['6', 'New value 1', 'New value 2', 'New value 3']],
     },
   });
