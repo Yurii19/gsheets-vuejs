@@ -24,7 +24,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: rgba(250, 235, 215, 0.39);
+  height: 100%;
   /* margin-top: 60px; */
+}
+html, body{
+  height: 100%;
 }
 iframe {
   margin: 0 !important;

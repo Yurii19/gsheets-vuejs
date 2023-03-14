@@ -13,6 +13,7 @@ export default{}
 </script>
  
 <style scoped >
-/* .home {
-} */
+.home {
+  /* background-color: antiquewhite; */
+} 
 </style>

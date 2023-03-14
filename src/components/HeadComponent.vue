@@ -18,6 +18,7 @@
       </button>
     </div>
     <div class="d-flex">
+      <span class="text-white">{{ currentUserEmail }}</span>
       <button type="button" class="btn btn-sm btn-info mr-2" @click="gLogOut">
         Log out
       </button>
@@ -28,51 +29,33 @@
 </template>
 
 <script setup>
-import {
-  // API_KEY,
-  // CLIENT_ID,
-  // SCOPES,
-  // SHEET,
-  //SHEET_DB_RAND,
-} from '@/variables/constants';
+// import // API_KEY,
+// // CLIENT_ID,
+// // SCOPES,
+// // SHEET,
+// //SHEET_DB_RAND,
+// '@/variables/constants';
 import { onMounted } from 'vue';
+import { ref } from 'vue';
 //import { googleSdkLoaded } from 'vue3-google-login';
 //import { getList } from '@/services/sheetsRest';
 //import { useRouter } from 'vue-router';
 
 onMounted(function () {
   window.gapi.load('client');
+  const user = window.localStorage.getItem('theUser');
+  const email = JSON.parse(user).email;
+  currentUserEmail.value = email;
 });
+
+let currentUserEmail = ref('234');
 
 //const router = useRouter();
 
 const gLogOut = () => {
   location.reload();
-  //router.push('/login');
   window.localStorage.removeItem('theUser');
- // getList(SHEET_DB_RAND).then((r) => console.log('getList >>> ', r));
 };
-
-// window.gapi.client
-//   .request({
-//     path: SHEET,
-//     method: 'GET',
-//     params: { key: API_KEY },
-//   })
-//   .then((r) => console.log('gLogOut >>> ', r));
-
-// const onLogin = () => {
-//   googleSdkLoaded((gSdk) => {
-//     gSdk.accounts.oauth2
-//       .initCodeClient({
-//         client_id: CLIENT_ID,
-//         scope: SCOPES,
-//         callback: () => {
-//         },
-//       })
-//       .requestCode();
-//    });
-// };
 </script>
 
 <style scoped></style>
