@@ -17,8 +17,9 @@
         <router-link to="/login" class="text-white"> Log in</router-link>
       </button>
     </div>
-    <div class="d-flex">
+    <div class="d-flex align-items-center" color="#ffdd59">
       <span class="text-white">{{ currentUserEmail }}</span>
+      <span class="mx-2" color="red"><MailIcon /></span>
       <button type="button" class="btn btn-sm btn-info mr-2" @click="gLogOut">
         Log out
       </button>
@@ -37,6 +38,7 @@
 // '@/variables/constants';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
+import MailIcon from '@/icons/MailIcon.vue';
 //import { googleSdkLoaded } from 'vue3-google-login';
 //import { getList } from '@/services/sheetsRest';
 //import { useRouter } from 'vue-router';
