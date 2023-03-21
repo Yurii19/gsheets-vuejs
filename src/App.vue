@@ -29,7 +29,7 @@ export default {
   /* margin-top: 60px; */
 }
 html, body{
-  height: 100%;
+  min-height: 100%;
 }
 iframe {
   margin: 0 !important;

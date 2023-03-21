@@ -55,34 +55,49 @@
         Clear
       </button>
     </form>
+    <table-component :sheet="sheetData"></table-component>
   </section>
 </template>
 
 <script>
 import { updateList, getList } from '@/services/sheetsRest';
 import { SHEET_DB_RAND } from '@/variables/constants';
+//import { getId } from '@/services/localServices';
+import TableComponent from '@/components/TableComponent.vue';
+//import { ref } from 'vue';
+
 export default {
+  components:{TableComponent},
   data() {
     return {
       viewTitle: 'Form page',
       nameInput: '',
       deviceInput: '',
       refInput: '',
+       sheetData: [['A','B','C','D']]
     };
   },
+  // setup(){
+  //  let sheetData= ref(['0'])
+
+  //  return {sheetData}
+  // },
   onMounted() {
-    console.log(window.localStorage.theUser);
-    console.log('window.localStorage.theUser');
+    // console.log(window.localStorage.theUser);
+    // console.log('window.localStorage.theUser');
   },
 
   methods: {
     getSheet() {
-      getList({ path: SHEET_DB_RAND }).then((r) =>
-        console.log('SHEET_DB_RAND: got sheet! ', r)
-      );
+      getList({ path: SHEET_DB_RAND }).then((r) => {
+       // getId({ srcRow: r.result.values });
+       //console.log('SHEET_DB_RAND: got sheet! ', r);
+        this.sheetData = r.result.values
+       // console.log('getList: ', this.sheetData)
+      });
     },
     submitForm() {
-      const newRow = ['1',this.nameInput, this.deviceInput, this.refInput]
+      const newRow = ['1', this.nameInput, this.deviceInput, this.refInput];
       updateList({
         path: SHEET_DB_RAND,
         values: [newRow],

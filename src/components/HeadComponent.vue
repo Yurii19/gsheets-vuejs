@@ -50,7 +50,7 @@ onMounted(function () {
   currentUserEmail.value = email;
 });
 
-let currentUserEmail = ref('234');
+let currentUserEmail = ref('unlogined');
 
 //const router = useRouter();
 
