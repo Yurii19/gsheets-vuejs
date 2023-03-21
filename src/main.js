@@ -8,6 +8,7 @@ import vue3GoogleLogin from 'vue3-google-login';
 import { CLIENT_ID } from './variables/constants';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import { createPinia } from 'pinia'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -33,6 +34,8 @@ router.beforeEach((to) => {
   }  
 });
 
+const pinia = createPinia();
+
 const app = createApp(App);
 
 app.use(vue3GoogleLogin, {
@@ -42,5 +45,7 @@ app.use(vue3GoogleLogin, {
 app.use(router);
 
 app.use(VueAxios, axios);
+
+app.use(pinia)
 
 app.mount('#app');

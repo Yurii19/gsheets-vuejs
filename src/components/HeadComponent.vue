@@ -46,8 +46,10 @@ import MailIcon from '@/icons/MailIcon.vue';
 onMounted(function () {
   window.gapi.load('client');
   const user = window.localStorage.getItem('theUser');
-  const email = JSON.parse(user).email;
-  currentUserEmail.value = email;
+  if (user) {
+    const email = JSON.parse(user).email;
+    currentUserEmail.value = email;
+  }
 });
 
 let currentUserEmail = ref('unlogined');
