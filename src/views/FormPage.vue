@@ -21,6 +21,10 @@ export default {
       viewTitle: 'Form page',
     };
   },
+  // onMounted(){
+  //   console.log(window)
+  //   console.log('window')
+  // }
 };
 </script>
 

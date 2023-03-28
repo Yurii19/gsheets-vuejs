@@ -82,12 +82,13 @@ export default {
 
   //  return {sheetData}
   // },
-  onMounted() {
-    // console.log(window.localStorage.theUser);
-    // console.log('window.localStorage.theUser');
+  mounted() {
+    console.log(window);
+    console.log('window.localStorage.theUser');
   },
 
   methods: {
+
     getSheet() {
       getList({ path: SHEET_DB_RAND }).then((r) => {
        // getId({ srcRow: r.result.values });
@@ -96,8 +97,9 @@ export default {
        // console.log('getList: ', this.sheetData)
       });
     },
+
     submitForm() {
-      const newRow = ['1', this.nameInput, this.deviceInput, this.refInput];
+      const newRow = ['9', this.nameInput, this.deviceInput, this.refInput];
       updateList({
         path: SHEET_DB_RAND,
         values: [newRow],

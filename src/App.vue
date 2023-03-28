@@ -11,9 +11,9 @@ export default {
   components: {
     HeadComponent,
   },
-  onMounted() {
-    console.log(window);
-  },
+  // onMounted() {
+  //   console.log(window);
+  // },
 };
 </script>
 

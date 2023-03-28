@@ -27,12 +27,12 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to) => {
-  const user = window.localStorage.theUser;
-  if (user === undefined && to.path !== '/login') {
-    return '/login';
-  }  
-});
+// router.beforeEach((to) => {
+//   const user = window.localStorage.theUser;
+//   if (user === undefined && to.path !== '/login') {
+//     return '/login';
+//   }  
+// });
 
 const pinia = createPinia();
 
