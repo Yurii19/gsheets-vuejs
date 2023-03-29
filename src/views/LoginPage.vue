@@ -3,7 +3,13 @@
     <div class="card-body">
       <h5 class="card-title">Please log in to continue</h5>
       <!-- <GoogleLogin :callback="onLogin" /> -->
-      <button @click="loginHandle">Login</button>
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        @click="loginHandle"
+      >
+        Login
+      </button>
       <button @click="getSheet">Get Sheet</button>
       <div></div>
 
@@ -15,10 +21,8 @@
 </template>
 
 <script setup>
-import { decodeCredential } from 'vue3-google-login';
 import { onMounted, ref } from 'vue';
 
-import { googleSdkLoaded } from 'vue3-google-login';
 import { CLIENT_ID, SCOPES } from '@/variables/constants';
 import { API_KEY } from '@/variables/constants';
 
@@ -39,7 +43,6 @@ onMounted(() => {
 });
 
 function getSheet() {
-  // console.log('getSheet')
   const gClient = window.gapi.client;
   console.log('getSheet', gClient);
 
@@ -60,7 +63,7 @@ function loginHandle() {
     // document.getElementById('signout_button').style.visibility = 'visible';
     // document.getElementById('authorize_button').innerText = 'Refresh';
     // await listMajors();
-    console.log('loginHandle >>> ',resp )
+    console.log('loginHandle >>> ', resp);
   };
 
   if (gapi.client.getToken() === null) {

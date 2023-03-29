@@ -39,6 +39,7 @@
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import MailIcon from '@/icons/MailIcon.vue';
+import { useAppStore } from '@/stores/store'
 //import { googleSdkLoaded } from 'vue3-google-login';
 //import { getList } from '@/services/sheetsRest';
 //import { useRouter } from 'vue-router';
@@ -52,7 +53,8 @@ onMounted(function () {
   }
 });
 
-let currentUserEmail = ref('unlogined');
+const store = useAppStore()
+let currentUserEmail = ref(store.getUserEmail);
 
 //const router = useRouter();
 
