@@ -2,7 +2,7 @@
   <div class="card mx-auto mt-5" style="width: 18rem">
     <div class="card-body">
       <h5 class="card-title">Please log in to continue</h5>
-      <GoogleLogin :callback="onLogin" />
+      <!-- <GoogleLogin :callback="onLogin" /> -->
       <button @click="loginHandle">Login</button>
       <button @click="getSheet">Get Sheet</button>
       <div></div>
@@ -16,7 +16,7 @@
 
 <script setup>
 import { decodeCredential } from 'vue3-google-login';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import { googleSdkLoaded } from 'vue3-google-login';
 import { CLIENT_ID, SCOPES } from '@/variables/constants';
@@ -33,6 +33,11 @@ let isLogined = ref(false);
 
 const gapi = window.gapi;
 
+onMounted(() => {
+  gapiLoaded();
+  gisLoaded();
+});
+
 function getSheet() {
   // console.log('getSheet')
   const gClient = window.gapi.client;
@@ -48,12 +53,29 @@ function getSheet() {
 }
 
 function loginHandle() {
-  gapi.load('client', initializeGapiClient);
-  gisLoaded();
+  tokenClient.callback = async (resp) => {
+    if (resp.error !== undefined) {
+      throw resp;
+    }
+    // document.getElementById('signout_button').style.visibility = 'visible';
+    // document.getElementById('authorize_button').innerText = 'Refresh';
+    // await listMajors();
+    console.log('loginHandle >>> ',resp )
+  };
 
+  if (gapi.client.getToken() === null) {
+    // Prompt the user to select a Google Account and ask for consent to share their data
+    // when establishing a new session.
+    tokenClient.requestAccessToken({ prompt: 'consent' });
+  } else {
+    // Skip display of account chooser and consent dialog for an existing session.
+    tokenClient.requestAccessToken({ prompt: '' });
+  }
   console.log('gapiInited', gapiInited);
   console.log('gisInited', gisInited);
   console.log('window', window);
+  // setTimeout(()=>{console.log('tokenClient >>>', tokenClient)}, 2000)
+  // setTimeout(()=>{console.log('tokenClient >>>', tokenClient.requestAccessToken({prompt: 'consent'}))}, 2000)
 }
 
 /**

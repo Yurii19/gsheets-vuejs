@@ -38,9 +38,9 @@ const pinia = createPinia();
 
 const app = createApp(App);
 
-app.use(vue3GoogleLogin, {
-  clientId: CLIENT_ID,
-});
+// app.use(vue3GoogleLogin, {
+//   clientId: CLIENT_ID,
+// });
 
 app.use(router);
 
