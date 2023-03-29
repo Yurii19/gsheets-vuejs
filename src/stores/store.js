@@ -10,7 +10,19 @@ export const useAppStore = defineStore('appstore', () => {
   // function increment() {
   //   count.value++;
   // }
-  function setLoginStatus(value) {isLoading.value = value}
+  function setLoginStatus(value) {
+    isLoading.value = value;
+  }
+  function setUserEmail(value) {
+    userEmail.value = value;
+  }
 
-  return { isLoading, userEmail, getIsLoading, getUserEmail };
+  return {
+    isLoading,
+    userEmail,
+    getIsLoading,
+    getUserEmail,
+    setUserEmail,
+    setLoginStatus,
+  };
 });

@@ -1,5 +1,5 @@
 <template>
-  <div class="head-container bg-info d-flex justify-content-between">
+  <div class="head-container bg-info d-flex justify-content-between align-items-center">
     <ul class="nav">
       <li class="nav-item">
         <a class="nav-link active" href="/"
@@ -12,6 +12,12 @@
         >
       </li>
     </ul>
+    <div class="spinner-border text-light" role="status">
+      <!-- <span class="sr-only">Loading...</span> -->
+    </div>
+    <!-- <div class="spinner-grow text-light" role="status">
+      <span class="sr-only">Loading...</span>
+    </div> -->
     <div class="d-flex">
       <button type="button" class="btn btn-sm btn-info">
         <router-link to="/login" class="text-white"> Log in</router-link>
@@ -39,28 +45,29 @@
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import MailIcon from '@/icons/MailIcon.vue';
-import { useAppStore } from '@/stores/store'
+import { useAppStore } from '@/stores/store';
 //import { googleSdkLoaded } from 'vue3-google-login';
 //import { getList } from '@/services/sheetsRest';
 //import { useRouter } from 'vue-router';
 
 onMounted(function () {
-  window.gapi.load('client');
-  const user = window.localStorage.getItem('theUser');
-  if (user) {
-    const email = JSON.parse(user).email;
-    currentUserEmail.value = email;
-  }
+  //   window.gapi.load('client');
+  //   const user = window.localStorage.getItem('theUser');
+  //   if (user) {
+  //     const email = JSON.parse(user).email;
+  //     currentUserEmail.value = email;
+  //   }
 });
 
-const store = useAppStore()
+const store = useAppStore();
 let currentUserEmail = ref(store.getUserEmail);
 
 //const router = useRouter();
 
 const gLogOut = () => {
-  location.reload();
-  window.localStorage.removeItem('theUser');
+  store.setUserEmail('mail @@@');
+  // location.reload();
+  // window.localStorage.removeItem('theUser');
 };
 </script>
 
