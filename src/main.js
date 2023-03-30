@@ -8,7 +8,9 @@ import vue3GoogleLogin from 'vue3-google-login';
 import { CLIENT_ID } from './variables/constants';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-import { createPinia } from 'pinia'
+import { createPinia } from 'pinia';
+//import { piniaPluginPersistedstate } from '@pinia/plugin-persistedstate';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -31,10 +33,11 @@ const router = createRouter({
 //   const user = window.localStorage.theUser;
 //   if (user === undefined && to.path !== '/login') {
 //     return '/login';
-//   }  
+//   }
 // });
 
 const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
 const app = createApp(App);
 
@@ -46,6 +49,6 @@ app.use(router);
 
 app.use(VueAxios, axios);
 
-app.use(pinia)
+app.use(pinia);
 
 app.mount('#app');
