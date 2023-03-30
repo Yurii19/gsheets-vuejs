@@ -40,7 +40,6 @@ let isLogined = ref(store.getUserEmail);
 
 const gapi = window.gapi;
 
-
 onMounted(() => {
   gapiLoaded();
   // gisLoaded();
@@ -80,15 +79,15 @@ function getSheet() {
 /**
  * Callback after Google Identity Services are loaded.
  */
-function gisLoaded() {
-  tokenClient = window.google.accounts.oauth2.initTokenClient({
-    client_id: CLIENT_ID,
-    scope: SCOPES,
-    callback: '', // defined later
-  });
-  gisInited = true;
-  // maybeEnableButtons();
-}
+// function gisLoaded() {
+//   tokenClient = window.google.accounts.oauth2.initTokenClient({
+//     client_id: CLIENT_ID,
+//     scope: SCOPES,
+//     callback: '', // defined later
+//   });
+//   gisInited = true;
+//   // maybeEnableButtons();
+// }
 
 function gapiLoaded() {
   gapi.load('client', initializeGapiClient);
@@ -100,19 +99,18 @@ async function initializeGapiClient() {
     discoveryDocs: [DISCOVERY_DOC],
   });
   gapiInited = true;
-  // maybeEnableButtons();
 }
 
 const onLogin = (response) => {
-  store.setLoadingStatus(true)
+  store.setLoadingStatus(true);
   const decodedData = decodeCredential(response.credential);
   console.log(decodedData);
-  const { email, name } = decodedData;
-  
-  // window.localStorage.setItem('theUser', JSON.stringify({ name, email }));
+  const { email, name, picture } = decodedData;
+
   googleTokenLogin().then((response) => {
     store.setUserEmail(email);
-    store.setLoadingStatus(false)
+    store.setLoadingStatus(false);
+    store.setAvatarUrl(picture);
 
     console.log('Handle the response', response);
   });

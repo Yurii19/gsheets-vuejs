@@ -1,5 +1,7 @@
 <template>
-  <div class="head-container bg-info d-flex justify-content-between align-items-center">
+  <div
+    class="head-container bg-info d-flex justify-content-between align-items-center"
+  >
     <ul class="nav">
       <li class="nav-item">
         <a class="nav-link active" href="/"
@@ -21,8 +23,18 @@
       </button>
     </div>
     <div class="d-flex align-items-center" color="#ffdd59">
-      <span class="text-white">{{ currentUserEmail ? currentUserEmail: 'log in please' }}</span>
-      <span class="mx-2" color="red"><MailIcon /></span>
+      <span class="text-white">{{
+        currentUserEmail ? currentUserEmail : 'log in please'
+      }}</span>
+      <!-- <span class="mx-2" color="red"><MailIcon /></span> -->
+      <img
+        width="40"
+        height="40"
+        :src="avatarUrl"
+        class="img-thumbnail mx-2 p-0"
+        alt="..."
+        style="border-radius: 50%"
+      />
       <button type="button" class="btn btn-sm btn-info mr-2" @click="gLogOut">
         Log out
       </button>
@@ -31,39 +43,21 @@
 </template>
 
 <script setup>
-// import // API_KEY,
-// // CLIENT_ID,
-// // SCOPES,
-// // SHEET,
-// //SHEET_DB_RAND,
-// '@/variables/constants';
+
 import { onMounted } from 'vue';
 import { ref } from 'vue';
-import MailIcon from '@/icons/MailIcon.vue';
 import { useAppStore } from '@/stores/store';
-//import { googleSdkLoaded } from 'vue3-google-login';
-//import { getList } from '@/services/sheetsRest';
-//import { useRouter } from 'vue-router';
 
-onMounted(function () {
-  //   window.gapi.load('client');
-  //   const user = window.localStorage.getItem('theUser');
-  //   if (user) {
-  //     const email = JSON.parse(user).email;
-  //     currentUserEmail.value = email;
-  //   }
-});
+onMounted(function () {});
 
 const store = useAppStore();
 let currentUserEmail = ref(store.getUserEmail);
 let isLoading = ref(store.getIsLoading);
-
-//const router = useRouter();
+let avatarUrl = ref(store.getAvatarUrl);
 
 const gLogOut = () => {
   store.setUserEmail('');
-  // location.reload();
-  // window.localStorage.removeItem('theUser');
+  store.setAvatarUrl('');
 };
 </script>
 
