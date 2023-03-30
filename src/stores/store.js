@@ -3,14 +3,14 @@ import { ref, computed } from 'vue';
 
 export const useAppStore = defineStore('appstore', () => {
   const isLoading = ref(false);
-  const userEmail = ref('email');
+  const userEmail = ref('');
 
   const getIsLoading = computed(() => isLoading);
   const getUserEmail = computed(() => userEmail);
   // function increment() {
   //   count.value++;
   // }
-  function setLoginStatus(value) {
+  function setLoadingStatus(value) {
     isLoading.value = value;
   }
   function setUserEmail(value) {
@@ -23,6 +23,6 @@ export const useAppStore = defineStore('appstore', () => {
     getIsLoading,
     getUserEmail,
     setUserEmail,
-    setLoginStatus,
+    setLoadingStatus,
   };
 });

@@ -2,14 +2,14 @@
   <div class="card mx-auto mt-5" style="width: 18rem">
     <div class="card-body">
       <h5 class="card-title">Please log in to continue</h5>
-      <!-- <GoogleLogin :callback="onLogin" /> -->
-      <button
+      <GoogleLogin v-if="!isLogined" :callback="onLogin" />
+      <!-- <button
         type="button"
         class="btn btn-outline-secondary"
         @click="loginHandle"
       >
         Login
-      </button>
+      </button> -->
       <button @click="getSheet">Get Sheet</button>
       <div></div>
 
@@ -22,9 +22,11 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-
+import { decodeCredential, googleTokenLogin } from 'vue3-google-login';
 import { CLIENT_ID, SCOPES } from '@/variables/constants';
 import { API_KEY } from '@/variables/constants';
+import { googleSdkLoaded } from 'vue3-google-login';
+import { useAppStore } from '@/stores/store';
 
 const DISCOVERY_DOC =
   'https://sheets.googleapis.com/$discovery/rest?version=v4';
@@ -32,14 +34,16 @@ const DISCOVERY_DOC =
 let tokenClient;
 let gapiInited = false;
 let gisInited = false;
+const store = useAppStore();
 
-let isLogined = ref(false);
+let isLogined = ref(store.getUserEmail);
 
 const gapi = window.gapi;
 
+
 onMounted(() => {
   gapiLoaded();
-  gisLoaded();
+  // gisLoaded();
 });
 
 function getSheet() {
@@ -55,31 +59,23 @@ function getSheet() {
     .then((resp) => console.log(' ->', resp));
 }
 
-function loginHandle() {
-  tokenClient.callback = async (resp) => {
-    if (resp.error !== undefined) {
-      throw resp;
-    }
-    // document.getElementById('signout_button').style.visibility = 'visible';
-    // document.getElementById('authorize_button').innerText = 'Refresh';
-    // await listMajors();
-    console.log('loginHandle >>> ', resp);
-  };
+// function loginHandle() {
+//   tokenClient.callback = async (resp) => {
+//     if (resp.error !== undefined) {
+//       throw resp;
+//     }
+//     console.log('loginHandle >>> ', resp);
+//   };
 
-  if (gapi.client.getToken() === null) {
-    // Prompt the user to select a Google Account and ask for consent to share their data
-    // when establishing a new session.
-    tokenClient.requestAccessToken({ prompt: 'consent' });
-  } else {
-    // Skip display of account chooser and consent dialog for an existing session.
-    tokenClient.requestAccessToken({ prompt: '' });
-  }
-  console.log('gapiInited', gapiInited);
-  console.log('gisInited', gisInited);
-  console.log('window', window);
-  // setTimeout(()=>{console.log('tokenClient >>>', tokenClient)}, 2000)
-  // setTimeout(()=>{console.log('tokenClient >>>', tokenClient.requestAccessToken({prompt: 'consent'}))}, 2000)
-}
+//   if (gapi.client.getToken() === null) {
+//     // Prompt the user to select a Google Account and ask for consent to share their data
+//     // when establishing a new session.
+//     tokenClient.requestAccessToken({ prompt: 'consent' });
+//   } else {
+//     // Skip display of account chooser and consent dialog for an existing session.
+//     tokenClient.requestAccessToken({ prompt: '' });
+//   }
+// }
 
 /**
  * Callback after Google Identity Services are loaded.
@@ -107,16 +103,19 @@ async function initializeGapiClient() {
   // maybeEnableButtons();
 }
 
-// function maybeEnableButtons() {
-//   if (gapiInited && gisInited) {
-//     document.getElementById('authorize_button').style.visibility = 'visible';
-//   }
-// }
-
 const onLogin = (response) => {
-  // const decodedData = decodeCredential(response.credential);
-  // const { email, name } = decodedData;
+  store.setLoadingStatus(true)
+  const decodedData = decodeCredential(response.credential);
+  console.log(decodedData);
+  const { email, name } = decodedData;
+  
   // window.localStorage.setItem('theUser', JSON.stringify({ name, email }));
+  googleTokenLogin().then((response) => {
+    store.setUserEmail(email);
+    store.setLoadingStatus(false)
+
+    console.log('Handle the response', response);
+  });
   // googleSdkLoaded((gSdk) => {
   //   console.log('googleSdkLoaded: ', gSdk);
   //   gSdk.accounts.oauth2

@@ -12,25 +12,20 @@
         >
       </li>
     </ul>
-    <div class="spinner-border text-light" role="status">
+    <div v-if="isLoading" class="spinner-border text-light" role="status">
       <!-- <span class="sr-only">Loading...</span> -->
     </div>
-    <!-- <div class="spinner-grow text-light" role="status">
-      <span class="sr-only">Loading...</span>
-    </div> -->
     <div class="d-flex">
       <button type="button" class="btn btn-sm btn-info">
         <router-link to="/login" class="text-white"> Log in</router-link>
       </button>
     </div>
     <div class="d-flex align-items-center" color="#ffdd59">
-      <span class="text-white">{{ currentUserEmail }}</span>
+      <span class="text-white">{{ currentUserEmail ? currentUserEmail: 'log in please' }}</span>
       <span class="mx-2" color="red"><MailIcon /></span>
       <button type="button" class="btn btn-sm btn-info mr-2" @click="gLogOut">
         Log out
       </button>
-
-      <!-- <GoogleLogin :callback="onLogin" /> -->
     </div>
   </div>
 </template>
@@ -61,11 +56,12 @@ onMounted(function () {
 
 const store = useAppStore();
 let currentUserEmail = ref(store.getUserEmail);
+let isLoading = ref(store.getIsLoading);
 
 //const router = useRouter();
 
 const gLogOut = () => {
-  store.setUserEmail('mail @@@');
+  store.setUserEmail('');
   // location.reload();
   // window.localStorage.removeItem('theUser');
 };
