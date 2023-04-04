@@ -9,10 +9,12 @@ export const useAppStore = defineStore(
     const userAvatarUrl = ref(
       'https://cdn-icons-png.flaticon.com/512/1077/1077114.png'
     );
+    const userCredentials = ref({ email: 'unlogined', given_name: '', picture: '' });
 
     const getIsLoading = computed(() => isLoading);
     const getUserEmail = computed(() => userEmail);
     const getAvatarUrl = computed(() => userAvatarUrl);
+    const getUserCredentials = computed(() => userCredentials);
 
     function setLoadingStatus(value) {
       isLoading.value = value;
@@ -28,14 +30,21 @@ export const useAppStore = defineStore(
           'https://cdn-icons-png.flaticon.com/512/1077/1077114.png';
       }
     }
+    function setUserCredentials(value) {
+      console.log(value)
+      userCredentials.value = value;
+    }
 
     return {
+      userCredentials,
       isLoading,
       userEmail,
       userAvatarUrl,
+      getUserCredentials,
       getIsLoading,
       getUserEmail,
       getAvatarUrl,
+      setUserCredentials,
       setUserEmail,
       setLoadingStatus,
       setAvatarUrl,

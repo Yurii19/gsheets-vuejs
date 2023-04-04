@@ -48,7 +48,7 @@ let currentUserEmail = ref(store.getUserEmail);
 
 const gapi = window.gapi;
 
-let token = '';
+//let token = '';
 
 onMounted(() => {
   gapiLoaded();
@@ -62,18 +62,22 @@ onMounted(() => {
 });
 
 function getUserData() {
-  const theToken = window.gapi.client.getToken()
-  console.log(' this token: > ',theToken.access_token)
-  gapi.client.request({
-  path: 'https://www.googleapis.com/userinfo/v2/me',
-  headers: {
-    'Authorization': 'Bearer ' + theToken.access_token
-  }
-}).then((credentials) =>{
-  console.log(credentials)
-  const {email, given_name, picture} = credentials.result;
-  console.log(email, given_name, picture)
-})
+  const theToken = window.gapi.client.getToken();
+  //console.log(' this token: > ',theToken.access_token)
+  gapi.client
+    .request({
+      path: 'https://www.googleapis.com/userinfo/v2/me',
+      headers: {
+        Authorization: 'Bearer ' + theToken.access_token,
+      },
+    })
+    .then((credentials) => {
+      // console.log(credentials)
+      const { email, given_name, picture } = credentials.result;
+      store.setUserCredentials({ email, given_name, picture });
+      //console.log(email, given_name, picture)
+     // console.log(store.getUserCredentials)
+    });
 }
 
 function loginHandle() {
@@ -81,9 +85,9 @@ function loginHandle() {
     if (resp.error !== undefined) {
       throw resp;
     }
-    console.log('loginHandle >>> ', resp);
+    // console.log('loginHandle >>> ', resp);
     store.setUserEmail('User@gmail.com');
-    token =  resp.access_token
+    //token =  resp.access_token
     // const currentUser = resp.currentUser.get();
     // console.log('currentUser >>> ', currentUser);
   };
@@ -123,17 +127,7 @@ async function initializeGapiClient() {
     discoveryDocs: [DISCOVERY_DOC],
   });
   gapiInited = true;
-  // maybeEnableButtons();
 }
-
-// function initAuth2() {
-//   console.log('initAuth2');
-//   gapi.load('auth2', function () {
-//     gapi.auth2.init({
-//       client_id: CLIENT_ID,
-//     });
-//   });
-// }
 
 function getSheet() {
   const gClient = window.gapi.client;
