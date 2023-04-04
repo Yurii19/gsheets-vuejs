@@ -67,14 +67,14 @@ import TableComponent from '@/components/TableComponent.vue';
 //import { ref } from 'vue';
 
 export default {
-  components:{TableComponent},
+  components: { TableComponent },
   data() {
     return {
       viewTitle: 'Form page',
       nameInput: '',
       deviceInput: '',
       refInput: '',
-       sheetData: [['A','B','C','D']]
+      sheetData: [['A', 'B', 'C', 'D']],
     };
   },
   // setup(){
@@ -88,14 +88,24 @@ export default {
   },
 
   methods: {
-
     getSheet() {
-      getList({ path: SHEET_DB_RAND }).then((r) => {
-       // getId({ srcRow: r.result.values });
-       //console.log('SHEET_DB_RAND: got sheet! ', r);
-        this.sheetData = r.result.values
-       // console.log('getList: ', this.sheetData)
-      });
+      // getList({ path: SHEET_DB_RAND }).then((r) => {
+      //  // getId({ srcRow: r.result.values });
+      //  //console.log('SHEET_DB_RAND: got sheet! ', r);
+      //   this.sheetData = r.result.values
+      //  // console.log('getList: ', this.sheetData)
+      // });
+      console.log('window - ', window);
+      const gClient = window.gapi.client;
+      console.log('getSheet', gClient);
+
+      gClient.sheets.spreadsheets
+        .create({
+          properties: {
+            title: 'title',
+          },
+        })
+        .then((resp) => console.log(' ->', resp));
     },
 
     submitForm() {

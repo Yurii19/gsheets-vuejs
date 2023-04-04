@@ -17,11 +17,12 @@
     <div v-if="isLoading" class="spinner-border text-light" role="status">
       <!-- <span class="sr-only">Loading...</span> -->
     </div>
-    <div class="d-flex">
-      <button type="button" class="btn btn-sm btn-info">
+    <!-- <div class="d-flex" v-if="!currentUserEmail" :callback="onLogin">
+      <button type="button" class="btn btn-sm btn-outline-warning">
         <router-link to="/login" class="text-white"> Log in</router-link>
       </button>
-    </div>
+    </div> -->
+    <GoogleLogin  :callback="gLogOut" />
     <div class="d-flex align-items-center" color="#ffdd59">
       <span class="text-white">{{
         currentUserEmail ? currentUserEmail : 'log in please'
@@ -35,7 +36,12 @@
         alt="..."
         style="border-radius: 50%"
       />
-      <button type="button" class="btn btn-sm btn-info mr-2" @click="gLogOut">
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-light mr-2"
+        @click="gLogOut"
+        v-if="currentUserEmail"
+      >
         Log out
       </button>
     </div>
@@ -43,21 +49,28 @@
 </template>
 
 <script setup>
-
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { useAppStore } from '@/stores/store';
+//import { useGapi } from 'vue3-google-login' googleLogout
+import { googleLogout } from 'vue3-google-login';
+import { GoogleLogin } from 'vue3-google-login';
+import { CLIENT_ID } from '@/variables/constants';
 
 onMounted(function () {});
+
+//const { gapi } = useGapi()
 
 const store = useAppStore();
 let currentUserEmail = ref(store.getUserEmail);
 let isLoading = ref(store.getIsLoading);
 let avatarUrl = ref(store.getAvatarUrl);
 
-const gLogOut = () => {
-  store.setUserEmail('');
-  store.setAvatarUrl('');
+const gLogOut = async () => {
+  googleLogout();
+  window.gapi.auth2.getAuthInstance().signOut()
+  // store.setUserEmail('');
+  // store.setAvatarUrl('');
 };
 </script>
 

@@ -1,4 +1,4 @@
-import { createApp } from 'vue';
+import { createApp, ref } from 'vue';
 import App from './App.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from './views/HomePage.vue';
@@ -9,8 +9,9 @@ import { CLIENT_ID } from './variables/constants';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import { createPinia } from 'pinia';
-//import { piniaPluginPersistedstate } from '@pinia/plugin-persistedstate';
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+import { useAppStore } from '@/stores/store';
+// import { ref } from 'vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -29,12 +30,12 @@ const router = createRouter({
   ],
 });
 
-// router.beforeEach((to) => {
-//   const user = window.localStorage.theUser;
-//   if (user === undefined && to.path !== '/login') {
-//     return '/login';
-//   }
-// });
+router.beforeEach((to) => {
+  let userEmail = ref(useAppStore().getUserEmail);
+  if (userEmail.value === '' && to.path !== '/login') {
+    return '/login';
+  }
+});
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
