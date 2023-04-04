@@ -32,6 +32,7 @@ import { onMounted, ref } from 'vue';
 
 import { CLIENT_ID, SCOPES } from '@/variables/constants';
 import { API_KEY } from '@/variables/constants';
+import { useAppStore } from '@/stores/store';
 
 const DISCOVERY_DOC =
   'https://sheets.googleapis.com/$discovery/rest?version=v4';
@@ -41,45 +42,50 @@ let gapiInited = false;
 let gisInited = false;
 
 let isLogined = ref(false);
+const store = useAppStore();
+
+let currentUserEmail = ref(store.getUserEmail);
 
 const gapi = window.gapi;
+
+let token = '';
 
 onMounted(() => {
   gapiLoaded();
   gisLoaded();
+
+  // gapi.load('auth2', function () {
+  //   gapi.auth2.init({
+  //     client_id: CLIENT_ID,
+  //   });
+  // });
 });
 
 function getUserData() {
-  const profile = window.gapi.auth2
-    .getAuthInstance()
-    .currentUser.get()
-   // .getBasicProfile();
-  //const email = profile.getEmail();
-  console.log(profile);
+  const theToken = window.gapi.client.getToken()
+  console.log(' this token: > ',theToken.access_token)
+  gapi.client.request({
+  path: 'https://www.googleapis.com/userinfo/v2/me',
+  headers: {
+    'Authorization': 'Bearer ' + theToken.access_token
+  }
+}).then((credentials) =>{
+  console.log(credentials)
+  const {email, given_name, picture} = credentials.result;
+  console.log(email, given_name, picture)
+})
 }
-
-// function getSheet() {
-//   const gClient = window.gapi.client;
-//   console.log('getSheet', gClient);
-
-//   gClient.sheets.spreadsheets
-//     .create({
-//       properties: {
-//         title: 'title',
-//       },
-//     })
-//     .then((resp) => console.log(' ->', resp));
-// }
 
 function loginHandle() {
   tokenClient.callback = async (resp) => {
     if (resp.error !== undefined) {
       throw resp;
     }
-    // document.getElementById('signout_button').style.visibility = 'visible';
-    // document.getElementById('authorize_button').innerText = 'Refresh';
-    // await listMajors();
     console.log('loginHandle >>> ', resp);
+    store.setUserEmail('User@gmail.com');
+    token =  resp.access_token
+    // const currentUser = resp.currentUser.get();
+    // console.log('currentUser >>> ', currentUser);
   };
 
   if (gapi.client.getToken() === null) {
@@ -90,11 +96,7 @@ function loginHandle() {
     // Skip display of account chooser and consent dialog for an existing session.
     tokenClient.requestAccessToken({ prompt: '' });
   }
-  console.log('gapiInited', gapiInited);
-  console.log('gisInited', gisInited);
   console.log('window', window);
-  // setTimeout(()=>{console.log('tokenClient >>>', tokenClient)}, 2000)
-  // setTimeout(()=>{console.log('tokenClient >>>', tokenClient.requestAccessToken({prompt: 'consent'}))}, 2000)
 }
 
 /**
@@ -112,7 +114,7 @@ function gisLoaded() {
 
 function gapiLoaded() {
   gapi.load('client', initializeGapiClient);
-  initAuth2();
+  //initAuth2();
 }
 
 async function initializeGapiClient() {
@@ -124,37 +126,27 @@ async function initializeGapiClient() {
   // maybeEnableButtons();
 }
 
-function initAuth2() {
-  console.log('initAuth2');
-  gapi.load('auth2', function () {
-    gapi.auth2.init({
-      client_id: CLIENT_ID,
-    });
-  });
-}
-
-// function maybeEnableButtons() {
-//   if (gapiInited && gisInited) {
-//     document.getElementById('authorize_button').style.visibility = 'visible';
-//   }
+// function initAuth2() {
+//   console.log('initAuth2');
+//   gapi.load('auth2', function () {
+//     gapi.auth2.init({
+//       client_id: CLIENT_ID,
+//     });
+//   });
 // }
 
-const onLogin = (response) => {
-  // const decodedData = decodeCredential(response.credential);
-  // const { email, name } = decodedData;
-  // window.localStorage.setItem('theUser', JSON.stringify({ name, email }));
-  // googleSdkLoaded((gSdk) => {
-  //   console.log('googleSdkLoaded: ', gSdk);
-  //   gSdk.accounts.oauth2
-  //     .initCodeClient({
-  //       client_id: CLIENT_ID,
-  //       scope: SCOPES,
-  //       callback: () => {},
-  //     })
-  //     .requestCode();
-  // });
-  // isLogined.value = true;
-};
+function getSheet() {
+  const gClient = window.gapi.client;
+  console.log('getSheet', gClient);
+
+  gClient.sheets.spreadsheets
+    .create({
+      properties: {
+        title: 'title',
+      },
+    })
+    .then((resp) => console.log(' ->', resp));
+}
 </script>
 
 <style scoped>

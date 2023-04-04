@@ -1,5 +1,7 @@
 <template>
-  <div class="head-container bg-info d-flex justify-content-between align-items-center">
+  <div
+    class="head-container bg-info d-flex justify-content-between align-items-center"
+  >
     <ul class="nav">
       <li class="nav-item">
         <a class="nav-link active" href="/"
@@ -24,7 +26,9 @@
       </button>
     </div>
     <div class="d-flex align-items-center" color="#ffdd59">
-      <span class="text-white">{{ currentUserEmail? currentUserEmail: 'log in' }}</span>
+      <span class="text-white">{{
+        currentUserEmail ? currentUserEmail : 'Unlogined'
+      }}</span>
       <span class="mx-2" color="red"><MailIcon /></span>
       <button type="button" class="btn btn-sm btn-info mr-2" @click="gLogOut">
         Log out
@@ -65,9 +69,11 @@ let currentUserEmail = ref(store.getUserEmail);
 //const router = useRouter();
 
 const gLogOut = () => {
-  store.setUserEmail('mail @@@');
-  // location.reload();
-  // window.localStorage.removeItem('theUser');
+  store.setUserEmail('');
+  const token = window.gapi.client.getToken();
+  window.google.accounts.oauth2.revoke(token.access_token);
+  window.gapi.client.setToken('');
+  console.info('Token has revoked ');
 };
 </script>
 
