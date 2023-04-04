@@ -24,7 +24,7 @@
       </button>
     </div>
     <div class="d-flex align-items-center" color="#ffdd59">
-      <span class="text-white">{{ currentUserEmail }}</span>
+      <span class="text-white">{{ currentUserEmail? currentUserEmail: 'log in' }}</span>
       <span class="mx-2" color="red"><MailIcon /></span>
       <button type="button" class="btn btn-sm btn-info mr-2" @click="gLogOut">
         Log out

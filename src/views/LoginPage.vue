@@ -11,6 +11,13 @@
         Login
       </button>
       <button @click="getSheet">Get Sheet</button>
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        @click="getUserData"
+      >
+        Get user data
+      </button>
       <div></div>
 
       <router-link to="/" class="" v-bind:class="{ classDisabled: !isLogined }"
@@ -42,18 +49,27 @@ onMounted(() => {
   gisLoaded();
 });
 
-function getSheet() {
-  const gClient = window.gapi.client;
-  console.log('getSheet', gClient);
-
-  gClient.sheets.spreadsheets
-    .create({
-      properties: {
-        title: 'title',
-      },
-    })
-    .then((resp) => console.log(' ->', resp));
+function getUserData() {
+  const profile = window.gapi.auth2
+    .getAuthInstance()
+    .currentUser.get()
+   // .getBasicProfile();
+  //const email = profile.getEmail();
+  console.log(profile);
 }
+
+// function getSheet() {
+//   const gClient = window.gapi.client;
+//   console.log('getSheet', gClient);
+
+//   gClient.sheets.spreadsheets
+//     .create({
+//       properties: {
+//         title: 'title',
+//       },
+//     })
+//     .then((resp) => console.log(' ->', resp));
+// }
 
 function loginHandle() {
   tokenClient.callback = async (resp) => {
@@ -96,6 +112,7 @@ function gisLoaded() {
 
 function gapiLoaded() {
   gapi.load('client', initializeGapiClient);
+  initAuth2();
 }
 
 async function initializeGapiClient() {
@@ -105,6 +122,15 @@ async function initializeGapiClient() {
   });
   gapiInited = true;
   // maybeEnableButtons();
+}
+
+function initAuth2() {
+  console.log('initAuth2');
+  gapi.load('auth2', function () {
+    gapi.auth2.init({
+      client_id: CLIENT_ID,
+    });
+  });
 }
 
 // function maybeEnableButtons() {
