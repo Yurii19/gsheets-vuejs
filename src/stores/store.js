@@ -15,12 +15,13 @@ export const useAppStore = defineStore(
       picture: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     });
 
-    const getIsLoading = computed(() => isLoading);
+    const getIsLoading = computed(() => isLoading.value);
     const getUserEmail = computed(() => userEmail);
     const getAvatarUrl = computed(() => userAvatarUrl);
     const getUserCredentials = computed(() => userCredentials);
 
     function setLoadingStatus(value) {
+      console.log(value)
       isLoading.value = value;
     }
     function setUserEmail(value) {
@@ -54,6 +55,6 @@ export const useAppStore = defineStore(
     };
   },
   {
-    persist: true,
+    // persist: true,
   }
 );

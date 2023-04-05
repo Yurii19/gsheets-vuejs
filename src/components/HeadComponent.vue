@@ -14,7 +14,7 @@
         >
       </li>
     </ul>
-    <div v-if="isLoading" class="spinner-border text-light" role="status">
+    <div v-if="store.getIsLoading" class="spinner-border text-light" role="status">
     </div>
     <div class="d-flex align-items-center" color="#ffdd59">
       <span class="text-white">{{ store.getUserCredentials.value.email }}</span>
@@ -41,15 +41,18 @@ import { useAppStore } from '@/stores/store';
 // import { CLIENT_ID } from '@/variables/constants';
 
 onMounted(function () {
-  console.log(store.getIsLoading)
 });
 
 //const { gapi } = useGapi()
 
 const store = useAppStore();
 //
-const isLoading = ref(store.getIsLoading.value);
 //const router = useRouter();
+
+// const switchStatus =()=>{
+//   const currentStatus = store.getIsLoading;
+//   store.setLoadingStatus(!currentStatus)
+// }
 
 const gLogOut = () => {
   // store.setUserEmail('');
