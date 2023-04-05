@@ -1,19 +1,19 @@
 <template lang="html">
   <section class="home">
     <h1>home Component</h1>
-    <button type="button" class="btn btn-secondary btn-sm">Small button</button>
-    <button type="button" class="btn btn-secondary ">Small button</button>
+    The application designed for convenience management your data, stored on
+    google sheets workspace
   </section>
 </template>
- 
+
 <script>
 //import { Options, Vue } from "vue-class-component";
 // @Options({})
-export default{}
+export default {};
 </script>
- 
-<style scoped >
+
+<style scoped>
 .home {
   /* background-color: antiquewhite; */
-} 
+}
 </style>

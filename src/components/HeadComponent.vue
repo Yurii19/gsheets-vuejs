@@ -15,17 +15,8 @@
       </li>
     </ul>
     <div v-if="isLoading" class="spinner-border text-light" role="status">
-      <!-- <span class="sr-only">Loading...</span> -->
     </div>
-    <!-- <div class="d-flex" v-if="!currentUserEmail" :callback="onLogin">
-      <button type="button" class="btn btn-sm btn-outline-warning">
-        <router-link to="/login" class="text-white"> Log in</router-link>
-      </button>
-    </div> -->
-    <GoogleLogin  :callback="gLogOut" />
     <div class="d-flex align-items-center" color="#ffdd59">
-      <!-- <span class="text-white">{{ credentials.email }}</span>
-      <span>_</span> -->
       <span class="text-white">{{ store.getUserCredentials.value.email }}</span>
       <img
         class="picture mx-3"
@@ -33,7 +24,6 @@
         width="30"
         alt=""
       />
-      <!-- <span class="mx-2" color="red"><MailIcon /></span> -->
       <button type="button" class="btn btn-sm btn-info mr-2" @click="gLogOut">
         Log out
       </button>
@@ -46,17 +36,19 @@ import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { useAppStore } from '@/stores/store';
 //import { useGapi } from 'vue3-google-login' googleLogout
-import { googleLogout } from 'vue3-google-login';
-import { GoogleLogin } from 'vue3-google-login';
-import { CLIENT_ID } from '@/variables/constants';
+// import { googleLogout } from 'vue3-google-login';
+// import { GoogleLogin } from 'vue3-google-login';
+// import { CLIENT_ID } from '@/variables/constants';
 
-onMounted(function () {});
+onMounted(function () {
+  console.log(store.getIsLoading)
+});
 
 //const { gapi } = useGapi()
 
 const store = useAppStore();
 //
-
+const isLoading = ref(store.getIsLoading.value);
 //const router = useRouter();
 
 const gLogOut = () => {
@@ -67,7 +59,7 @@ const gLogOut = () => {
   // console.info('Token has revoked ');
   console.log(store.getUserCredentials.value);
   const theToken = window.gapi.client.getToken();
-  console.log('theToken > ', theToken)
+  console.log('theToken > ', theToken);
 };
 </script>
 
