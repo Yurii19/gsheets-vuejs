@@ -24,24 +24,17 @@
     </div> -->
     <GoogleLogin  :callback="gLogOut" />
     <div class="d-flex align-items-center" color="#ffdd59">
-      <span class="text-white">{{
-        currentUserEmail ? currentUserEmail : 'log in please'
-      }}</span>
-      <!-- <span class="mx-2" color="red"><MailIcon /></span> -->
+      <!-- <span class="text-white">{{ credentials.email }}</span>
+      <span>_</span> -->
+      <span class="text-white">{{ store.getUserCredentials.value.email }}</span>
       <img
-        width="40"
-        height="40"
-        :src="avatarUrl"
-        class="img-thumbnail mx-2 p-0"
-        alt="..."
-        style="border-radius: 50%"
+        class="picture mx-3"
+        :src="store.getUserCredentials.value.picture"
+        width="30"
+        alt=""
       />
-      <button
-        type="button"
-        class="btn btn-sm btn-outline-light mr-2"
-        @click="gLogOut"
-        v-if="currentUserEmail"
-      >
+      <!-- <span class="mx-2" color="red"><MailIcon /></span> -->
+      <button type="button" class="btn btn-sm btn-info mr-2" @click="gLogOut">
         Log out
       </button>
     </div>
@@ -62,16 +55,25 @@ onMounted(function () {});
 //const { gapi } = useGapi()
 
 const store = useAppStore();
-let currentUserEmail = ref(store.getUserEmail);
-let isLoading = ref(store.getIsLoading);
-let avatarUrl = ref(store.getAvatarUrl);
+//
 
-const gLogOut = async () => {
-  googleLogout();
-  window.gapi.auth2.getAuthInstance().signOut()
+//const router = useRouter();
+
+const gLogOut = () => {
   // store.setUserEmail('');
-  // store.setAvatarUrl('');
+  // const token = window.gapi.client.getToken();
+  // window.google.accounts.oauth2.revoke(token.access_token);
+  // window.gapi.client.setToken('');
+  // console.info('Token has revoked ');
+  console.log(store.getUserCredentials.value);
+  const theToken = window.gapi.client.getToken();
+  console.log('theToken > ', theToken)
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.picture {
+  border: 1px solid white;
+  border-radius: 50%;
+}
+</style>

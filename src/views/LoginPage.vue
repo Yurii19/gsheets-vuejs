@@ -11,6 +11,13 @@
         Login
       </button> -->
       <button @click="getSheet">Get Sheet</button>
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        @click="getUserData"
+      >
+        Get user data
+      </button>
       <div></div>
 
       <router-link to="/" class="" v-bind:class="{ classDisabled: !isLogined }"
@@ -25,7 +32,6 @@ import { onMounted, ref } from 'vue';
 import { decodeCredential, googleTokenLogin } from 'vue3-google-login';
 import { CLIENT_ID, SCOPES } from '@/variables/constants';
 import { API_KEY } from '@/variables/constants';
-import { googleSdkLoaded } from 'vue3-google-login';
 import { useAppStore } from '@/stores/store';
 
 const DISCOVERY_DOC =
@@ -36,45 +42,54 @@ let gapiInited = false;
 let gisInited = false;
 const store = useAppStore();
 
-let isLogined = ref(store.getUserEmail);
+let isLogined = ref(false);
+const store = useAppStore();
+
+let currentUserEmail = ref(store.getUserEmail);
 
 const gapi = window.gapi;
 
+//let token = '';
+
 onMounted(() => {
   gapiLoaded();
-  // gisLoaded();
+  gisLoaded();
+
 });
 
-function getSheet() {
-  const gClient = window.gapi.client;
-  console.log('getSheet', gClient);
-
-  gClient.sheets.spreadsheets
-    .create({
-      properties: {
-        title: 'title',
+function getUserData() {
+  const theToken = window.gapi.client.getToken();
+  gapi.client
+    .request({
+      path: 'https://www.googleapis.com/userinfo/v2/me',
+      headers: {
+        Authorization: 'Bearer ' + theToken.access_token,
       },
     })
-    .then((resp) => console.log(' ->', resp));
+    .then((credentials) => {
+      const { email, given_name, picture } = credentials.result;
+      store.setUserCredentials({ email, given_name, picture });
+    });
 }
 
-// function loginHandle() {
-//   tokenClient.callback = async (resp) => {
-//     if (resp.error !== undefined) {
-//       throw resp;
-//     }
-//     console.log('loginHandle >>> ', resp);
-//   };
+function loginHandle() {
+  tokenClient.callback = async (resp) => {
+    if (resp.error !== undefined) {
+      throw resp;
+    }
+    
+  };
 
-//   if (gapi.client.getToken() === null) {
-//     // Prompt the user to select a Google Account and ask for consent to share their data
-//     // when establishing a new session.
-//     tokenClient.requestAccessToken({ prompt: 'consent' });
-//   } else {
-//     // Skip display of account chooser and consent dialog for an existing session.
-//     tokenClient.requestAccessToken({ prompt: '' });
-//   }
-// }
+  if (gapi.client.getToken() === null) {
+    // Prompt the user to select a Google Account and ask for consent to share their data
+    // when establishing a new session.
+    tokenClient.requestAccessToken({ prompt: 'consent' });
+  } else {
+    // Skip display of account chooser and consent dialog for an existing session.
+    tokenClient.requestAccessToken({ prompt: '' });
+  }
+  console.log('window', window);
+}
 
 /**
  * Callback after Google Identity Services are loaded.
@@ -101,31 +116,18 @@ async function initializeGapiClient() {
   gapiInited = true;
 }
 
-const onLogin = (response) => {
-  store.setLoadingStatus(true);
-  const decodedData = decodeCredential(response.credential);
-  console.log(decodedData);
-  const { email, name, picture } = decodedData;
+function getSheet() {
+  const gClient = window.gapi.client;
+  console.log('getSheet', gClient);
 
-  googleTokenLogin().then((response) => {
-    store.setUserEmail(email);
-    store.setLoadingStatus(false);
-    store.setAvatarUrl(picture);
-
-    console.log('Handle the response', response);
-  });
-  // googleSdkLoaded((gSdk) => {
-  //   console.log('googleSdkLoaded: ', gSdk);
-  //   gSdk.accounts.oauth2
-  //     .initCodeClient({
-  //       client_id: CLIENT_ID,
-  //       scope: SCOPES,
-  //       callback: () => {},
-  //     })
-  //     .requestCode();
-  // });
-  // isLogined.value = true;
-};
+  gClient.sheets.spreadsheets
+    .create({
+      properties: {
+        title: 'title',
+      },
+    })
+    .then((resp) => console.log(' ->', resp));
+}
 </script>
 
 <style scoped>
