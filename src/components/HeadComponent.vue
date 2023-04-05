@@ -80,7 +80,9 @@ const gLogOut = () => {
   // window.google.accounts.oauth2.revoke(token.access_token);
   // window.gapi.client.setToken('');
   // console.info('Token has revoked ');
-  //console.log(credentials.value.email);
+  console.log(store.getUserCredentials.value);
+  const theToken = window.gapi.client.getToken();
+  console.log('theToken > ', theToken)
 };
 </script>
 
