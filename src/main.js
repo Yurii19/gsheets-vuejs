@@ -31,8 +31,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  let userEmail = ref(useAppStore().getUserEmail);
-  if (userEmail.value === '' && to.path !== '/login') {
+  let userEmail = ref(useAppStore().getUserCredentials);
+  if (userEmail.value.email === '' && to.path !== '/login') {
     return '/login';
   }
 });

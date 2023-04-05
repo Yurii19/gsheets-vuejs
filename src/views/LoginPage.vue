@@ -30,9 +30,9 @@ const DISCOVERY_DOC =
   'https://sheets.googleapis.com/$discovery/rest?version=v4';
 
 let tokenClient;
-let isLogined = computed(()=> {
+let isLogined = computed(() => {
   //console.log(store.getUserCredentials.value.email)
-  return store.getUserCredentials.value.email !== 'unlogined'
+  return store.getUserCredentials.value.email !== 'unlogined';
 });
 const store = useAppStore();
 
@@ -41,17 +41,14 @@ const store = useAppStore();
 const gapi = window.gapi;
 
 onMounted(() => {
- 
   setTimeout(() => {
     gapiLoaded();
     gisLoaded();
   }, 1000);
 });
 
-
-
 function loginHandle() {
-  //store.setLoadingStatus(true)
+  store.setLoadingStatus(true);
   tokenClient.callback = async (resp) => {
     if (resp.error !== undefined) {
       throw resp;
@@ -65,8 +62,8 @@ function loginHandle() {
   } else {
     // Skip display of account chooser and consent dialog for an existing session.
     tokenClient.requestAccessToken({ prompt: '' });
-  }  
-  //store.setLoadingStatus(false)
+  }
+  store.setLoadingStatus(false);
 }
 
 /**
@@ -95,15 +92,17 @@ async function initializeGapiClient() {
 
 function setUserData() {
   const theToken = window.gapi.client.getToken();
-  window.gapi.client.request({
-    path: 'https://www.googleapis.com/userinfo/v2/me',
-    headers: {
-      Authorization: 'Bearer ' + theToken.access_token,
-    },
-  }).then((credentials) => {
-    const { email, given_name, picture } = credentials.result;
-    store.setUserCredentials({ email, given_name, picture });
-  });
+  window.gapi.client
+    .request({
+      path: 'https://www.googleapis.com/userinfo/v2/me',
+      headers: {
+        Authorization: 'Bearer ' + theToken.access_token,
+      },
+    })
+    .then((credentials) => {
+      const { email, given_name, picture } = credentials.result;
+      store.setUserCredentials({ email, given_name, picture });
+    });
 }
 
 function getSheet() {

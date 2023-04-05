@@ -10,9 +10,9 @@ export const useAppStore = defineStore(
       'https://cdn-icons-png.flaticon.com/512/1077/1077114.png'
     );
     const userCredentials = ref({
-      email: 'unlogined',
+      email: '',
       given_name: '',
-      picture: '',
+      picture: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     });
 
     const getIsLoading = computed(() => isLoading);

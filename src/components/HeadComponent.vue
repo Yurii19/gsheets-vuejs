@@ -64,6 +64,10 @@ const gLogOut = () => {
 </script>
 
 <style scoped>
+
+.router-link-active, .router-link-exact-active {
+  font-weight: 600;
+}
 .picture {
   border: 1px solid white;
   border-radius: 50%;
