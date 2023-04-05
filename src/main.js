@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from './views/HomePage.vue';
 import FormPage from './views/FormPage.vue';
 import LoginPage from './views/LoginPage.vue';
+import InfoPage from './views/InfoPage.vue';
 import vue3GoogleLogin from 'vue3-google-login';
 import { CLIENT_ID } from './variables/constants';
 import axios from 'axios';
@@ -26,16 +27,21 @@ const router = createRouter({
       name: 'Form',
       component: FormPage,
     },
+    {
+      path: '/info',
+      name: 'Info',
+      component: InfoPage,
+    },
     { path: '/login', name: 'Login', component: LoginPage },
   ],
 });
 
-router.beforeEach((to) => {
-  let userEmail = ref(useAppStore().getUserCredentials);
-  if (userEmail.value.email === '' && to.path !== '/login') {
-    return '/login';
-  }
-});
+// router.beforeEach((to) => {
+//   let userEmail = ref(useAppStore().getUserCredentials);
+//   if (userEmail.value.email === '' && to.path !== '/login') {
+//     return '/login';
+//   }
+// });
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);

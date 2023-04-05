@@ -1,6 +1,7 @@
 <template>
   <HeadComponent />
   <router-view></router-view>
+  <hr/>
 </template>
 
 <script>
@@ -29,9 +30,16 @@ export default {
   /* margin-top: 60px; */
 }
 html, body{
-  min-height: 100%;
+  min-height: 100vh;
+  /* border-bottom: 1px solid blueviolet; */
 }
 iframe {
   margin: 0 !important;
+}
+hr{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(172, 28, 28);
 }
 </style>

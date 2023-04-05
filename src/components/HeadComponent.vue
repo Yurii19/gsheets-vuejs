@@ -13,11 +13,25 @@
           ><router-link to="/form" class="text-white">Form</router-link></a
         >
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"
+          ><router-link to="/info" class="text-white">Info</router-link></a
+        >
+      </li>
     </ul>
-    <div v-if="store.getIsLoading" class="spinner-border text-light" role="status">
-    </div>
+    <div
+      v-if="store.getIsLoading"
+      class="spinner-border text-light"
+      role="status"
+    ></div>
     <div class="d-flex align-items-center" color="#ffdd59">
       <span class="text-white">{{ store.getUserCredentials.value.email }}</span>
+      <router-link
+        to="/login"
+        v-if="!store.getUserCredentials.value.email"
+        class="text-white"
+        >Log In</router-link
+      >
       <img
         class="picture mx-3"
         :src="store.getUserCredentials.value.picture"
@@ -40,8 +54,7 @@ import { useAppStore } from '@/stores/store';
 // import { GoogleLogin } from 'vue3-google-login';
 // import { CLIENT_ID } from '@/variables/constants';
 
-onMounted(function () {
-});
+onMounted(function () {});
 
 //const { gapi } = useGapi()
 
@@ -67,8 +80,8 @@ const gLogOut = () => {
 </script>
 
 <style scoped>
-
-.router-link-active, .router-link-exact-active {
+.router-link-active,
+.router-link-exact-active {
   font-weight: 600;
 }
 .picture {
